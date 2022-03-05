@@ -9,7 +9,12 @@ import { makeStyles } from "@material-ui/core";
 // import MenuItem from "@mui/material/MenuItem";
 // import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Appbar from "../AppBar/Appbar";
-const theme = createTheme({});
+const theme = createTheme({
+	palette: {
+		primary: { main: '#09A79E' }, // Purple and green play nicely together.
+		secondary: { main: '#FFFFFF' }, // This is just green.A700 as hex.
+	},
+});
 
 const dash = makeStyles({
 	dashContainer: {},

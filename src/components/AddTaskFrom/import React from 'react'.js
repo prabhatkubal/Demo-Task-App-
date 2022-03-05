@@ -1,5 +1,5 @@
 import React from 'react'
-import { Formik, Form, useField } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from "yup";
 import {
     TextField,
@@ -16,34 +16,20 @@ import {
     RadioGroup,
     Checkbox,
     FormGroup,
-    MenuItem,
-    InputLabel,
-    Select
 } from '@material-ui/core'
-// import { DesktopDatePicker, LocalizationProvider, AdapterDateFns } from '@mui/lab';
 import useStyles from "../Styles/addtaskform.styles"
 import CreateBtn from '../FormsUI/CreateBtn/CreateBtn';
 import CancelBtn from '../FormsUI/CancelBtn/CancelBtn';
-// import Select from "../FormsUI/Select/index"
+import Select from "../FormsUI/Select/index"
 import Priorities from "../../Data/Priorities.json"
 // import Checkbox from '../FormsUI/Checkbox'
-
-const stylesRadio = theme => ({
-    radio: {
-        '&$checked': {
-            color: '#09A79E'
-        }
-    },
-    checked: {}
-})
 
 const INITIAL_FORM_STATE = {
     title: "",
     description: "",
-    dueDate: "",
-    // label: [],
-    priority: "",
-    type: [],
+    label: [],
+    priority: [1],
+    type: [1],
 };
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -51,33 +37,31 @@ const FORM_VALIDATION = Yup.object().shape({
         .required('Required'),
     description: Yup.string()
         .required('Required'),
-    // label: Yup.array()
-    //     .required('Select atleast one'),
-    priority: Yup.string()
+    label: Yup.array()
         .required('Required'),
-    type: Yup.string()
+    priority: Yup.number()
+        .integer()
+        .required('Required'),
+    type: Yup.number()
+        .integer()
         .required('Required'),
 });
 
-const AddTaskForm = (props) => {
-    const classes = useStyles();
-    const radioClasses = stylesRadio();
-    const setOpenPopup = props.setOpenPopup;
 
+const AddTaskForm = () => {
+    const classes = useStyles();
     // const classes = addFormStyles();
     return (
-        <Formik initialValues={ { ...INITIAL_FORM_STATE } }
+        <Formik initialValues={ {
+            ...INITIAL_FORM_STATE
+        } }
             validationSchema={ FORM_VALIDATION }
-            onSubmit={ (values, { setSubmitting }) => {
-                setTimeout(() => {
-                    console.log(values);
-                    setSubmitting(false);
-
-                })
+            onSubmit={ values => {
+                console.log(values);
             } }>
             <Form className={ classes.formContainer }>
                 <Grid Container className={ classes.grid }>
-                    <Typography color='secondary'>
+                    <Typography className={ classes.textfieldTypography }>
                         Title
                     </Typography>
                     <TextField variant='outlined' size="small" name='title' className={ classes.textfield } />
@@ -86,96 +70,63 @@ const AddTaskForm = (props) => {
                     </Typography>
                     <TextareaAutosize
                         className={ classes.textarea }
-                        name='description'
                         maxRows={ 5 }
-                        aria-label="maximum height"
+                        name="description"
                         style={ { width: "100%", height: "86px", background: "#2B2C41" } }
                     />
 
                     <Grid style={ { marginTop: "10px" } } container rowSpacing={ 1 } columnSpacing={ { xs: 1, sm: 2, md: 3 } }>
                         <Grid item xs={ 6 }>
-                            {/* <LocalizationProvider dateAdapter={ AdapterDateFns }>
-                                <DesktopDatePicker
-                                    label="Date desktop"
-                                    inputFormat="MM/dd/yyyy"
-                                    renderInput={ (params) => <TextField { ...params } /> }
-                                />
-                            </LocalizationProvider> */}
+                            <div>prabhat</div>
                         </Grid>
                         <Grid item xs={ 6 }>
                             <FormControl>
-                                <Typography color='secondary' >Type</Typography>
+                                <FormLabel>Type</FormLabel>
                                 <RadioGroup
                                     row
-                                    aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="type"
                                 >
-                                    <FormControlLabel
-                                        value="1"
-                                        control={ <Radio color='primary' /> }
-                                        label="Task" />
-                                    <FormControlLabel
-                                        value="2"
-                                        control={ <Radio color='primary' /> }
-                                        label="Story" />
-                                    <FormControlLabel
-                                        value="3"
-                                        control={ <Radio color='primary' /> }
-                                        label="Bug" />
+                                    <FormControlLabel value="1" control={ <Radio /> } label="Task" />
+                                    <FormControlLabel value="2" control={ <Radio /> } label="Story" />
+                                    <FormControlLabel value="3" control={ <Radio /> } label="Bugs" />
                                 </RadioGroup>
                             </FormControl>
                         </Grid>
                     </Grid>
                     <Grid style={ { marginTop: "10px", } } container rowSpacing={ 1 } columnSpacing={ { xs: 1, sm: 2, md: 3 } }>
                         <Grid item xs={ 6 }>
-                            {/* <Select
+                            <Select
                                 style={ { marginTop: "20px", width: 250 } }
                                 name="Priority"
                                 label="Priority"
                                 options={ Priorities }
-                            /> */}
-                            <FormControl fullWidth>
-                                <Typography color='secondary' >Priority</Typography>
-                                <Select
-                                    color='secondary'
-                                    size="small"
-                                    style={ { marginTop: "5px", width: 250 } }
-                                    variant='outlined'
-                                    fullWidth="true"
-                                    name="priority"
-                                    value={ 1 }
-                                >
-                                    <MenuItem value="1">High</MenuItem>
-                                    <MenuItem value="2">Medium</MenuItem>
-                                    <MenuItem value="3">Low</MenuItem>
-                                </Select>
-                            </FormControl>
+                            />
                         </Grid>
                         <Grid item xs={ 6 }>
                             <FormControl component="fieldset">
-                                <Typography component="legend" color='secondary'>Label</Typography>
-                                <FormGroup aria-label="position" row name="label">
+                                <FormLabel component="legend">Label placement</FormLabel>
+                                <FormGroup aria-label="position" row>
                                     <FormControlLabel
                                         value="1"
-                                        control={ <Checkbox color='primary' /> }
+                                        control={ <Checkbox /> }
                                         label="Feature"
                                         labelPlacement="end"
                                     />
                                     <FormControlLabel
                                         value="2"
-                                        control={ <Checkbox color='primary' /> }
+                                        control={ <Checkbox /> }
                                         label="Front end"
                                         labelPlacement="end"
                                     />
                                     <FormControlLabel
                                         value="3"
-                                        control={ <Checkbox color='primary' /> }
+                                        control={ <Checkbox /> }
                                         label="Change request"
                                         labelPlacement="end"
                                     />
                                     <FormControlLabel
                                         value="4"
-                                        control={ <Checkbox color='primary' /> }
+                                        control={ <Checkbox /> }
                                         label="Back end"
                                         labelPlacement="end"
                                     />
@@ -184,13 +135,13 @@ const AddTaskForm = (props) => {
                         </Grid>
                     </Grid>
                     <Grid style={ { marginTop: "10px", justifyContent: "center" } } container rowSpacing={ 1 } columnSpacing={ { xs: 1, sm: 1, md: 3 } }>
-                        <CancelBtn onClick={ () => setOpenPopup(false) } >Cancel</CancelBtn>
+                        <CancelBtn>Cancel</CancelBtn>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <CreateBtn >Create</CreateBtn>
+                        <CreateBtn>Create</CreateBtn>
                     </Grid>
                 </Grid>
             </Form>
-        </Formik >
+        </Formik>
     )
 }
 

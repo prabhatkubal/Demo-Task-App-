@@ -57,8 +57,7 @@ const Login = () => {
 							axiosInstance
 								.post("/api/users/login", values)
 								.then((res) => {
-									localStorage.token = JSON.stringify(res.data);
-									console.log("res", res.data)
+									localStorage.token = res.data.data.accessToken;
 									navigate("/dashboard")
 								})
 								.catch((err) => alert(err.response.data.errors));
