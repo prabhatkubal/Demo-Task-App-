@@ -9,8 +9,7 @@ import ButtonSubmit from "../FormsUI/Buttons";
 import { Button } from "@material-ui/core";
 import useStyles from "../Styles/login&signup.styles";
 import axiosInstance from "../../helpers/axios";
-const baseURL = process.env.REACT_APP_BACKEND_URL;
-const LOGIN_URL = "/api/users/login";
+import path from "../../helpers/apiURL"
 
 const WhiteTypography = withStyles({
 	root: {
@@ -35,15 +34,14 @@ const Login = () => {
 		<Grid container style={ { minHeight: "100vh" } }>
 			<Grid item xs={ 3 } md={ 12 } className={ classes.topBarContainer }>
 				Need an account ?{ " " }
-				<Button
-					as={ Link }
-					to="/signup"
-					href="/signup"
-					className={ classes.entryFormToogle }
-					variant="outlined"
-				>
-					Signup
-				</Button>
+				<Link to="/signup">
+					<Button
+						className={ classes.entryFormToogle }
+						variant="outlined"
+					>
+						Signup
+					</Button>
+				</Link>
 			</Grid>
 
 			<Grid item md={ 6 } className={ classes.formikContainer }>
@@ -53,8 +51,9 @@ const Login = () => {
 					onSubmit={ (values) => {
 						console.log(values);
 						axiosInstance
-							.post(`${baseURL}${LOGIN_URL}`, values)
+							.post(path.LOGIN_URL, values)
 							.then((res) => {
+								console.log(res.data.data)
 								localStorage.firstname = res.data.data.firstName;
 								localStorage.token = res.data.data.accessToken;
 								navigate("/dashboard")
@@ -81,7 +80,7 @@ const Login = () => {
 					</Form>
 				</Formik>
 			</Grid>
-		</Grid >
+		</Grid>
 	);
 };
 

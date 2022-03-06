@@ -10,7 +10,7 @@ import { Axios } from "axios";
 import { Link } from "react-router-dom";
 import useStyles from "../Styles/login&signup.styles";
 import axiosInstance from "../../helpers/axios";
-
+import path from "../../helpers/apiURL"
 const WhiteTypography = withStyles({
 	root: {
 		color: "#FFFFFF",
@@ -39,65 +39,59 @@ const Signup = () => {
 	const classes = useStyles();
 
 	return (
-		<Grid container style={ { minHeight: "100vh" } }>
-			<Grid item xs={ 3 } md={ 12 } className={ classes.topBarContainer }>
-				Need an account ?{ " " }
+		<Grid container style={{ minHeight: "100vh" }}>
+			<Grid item xs={3} md={12} className={classes.topBarContainer}>
+				Need an account ?{" "}
+				<Link to="/">
 				<Button
-					as={ Link }
-					to="/"
-					href="/"
-					className={ classes.entryFormToogle }
+					className={classes.entryFormToogle}
 					variant="outlined"
 				>
 					Login
 				</Button>
+				</Link>
 			</Grid>
-			<Grid item md={ 6 } className={ classes.formikContainer }>
+			<Grid item md={6} className={classes.formikContainer}>
 				<Formik
-					initialValues={ { ...INITIAL_FORM_STATE } }
-					validationSchema={ FORM_VALIDATION }
-					onSubmit={ (values, { setSubmitting }) => {
-						setTimeout(() => {
-							console.log(values);
-							setSubmitting(false);
-
-							axiosInstance
-								.post("/api/users", values)
-								.then((res) => {
-									alert("sign up succcesfull");
-									console.log("res", res.data);
-								})
-								.catch((err) => {
-									alert(err.response.data.errors);
-									console.log("err", err.response.data.errors);
-								});
-						}, 400);
-					} }
+					initialValues={{ ...INITIAL_FORM_STATE }}
+					validationSchema={FORM_VALIDATION}
+					onSubmit={(values, { setSubmitting }) => {
+						axiosInstance
+							.post(path.SIGNUP_URL, values)
+							.then((res) => {
+								alert("sign up succcesfull");
+								console.log("res", res.data);
+							})
+							.catch((err) => {
+								alert(err.response.data.errors);
+								console.log("err", err.response.data.errors);
+							});
+					}}
 				>
-					<Form className={ classes.formContainer }>
+					<Form className={classes.formContainer}>
 						<Grid container justifyContent="center">
 							<WhiteTypography variant="h3">SignUp</WhiteTypography>
 						</Grid>
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							First Name
 						</Typography>
-						<Textfield name="firstName" className={ classes.textfield } />
+						<Textfield name="firstName" className={classes.textfield} />
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							Last Name
 						</Typography>
-						<Textfield name="lastName" className={ classes.textfield } />
+						<Textfield name="lastName" className={classes.textfield} />
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							Email_ID
 						</Typography>
-						<Textfield name="email" className={ classes.textfield } />
+						<Textfield name="email" className={classes.textfield} />
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							Password
 						</Typography>
-						<Textfield name="password" className={ classes.textfield } />
+						<Textfield name="password" className={classes.textfield} />
 
 						<ButtonSubmit>Submit</ButtonSubmit>
 					</Form>

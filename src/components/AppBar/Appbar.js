@@ -21,10 +21,10 @@ const theme = createTheme({
 	},
 });
 
-let displayName = localStorage.getItem("firstname");
-let displayLetter = displayName.charAt(0);
-
 const Appbar = () => {
+	let displayName = localStorage.getItem("firstname");
+	let displayLetter = displayName.charAt(0);
+	
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);

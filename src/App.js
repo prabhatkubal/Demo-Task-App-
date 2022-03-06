@@ -16,9 +16,6 @@ import Dashboard from './components/Dashboard/Dashboard';
 // });
 
 function App() {
-  useEffect(() => {
-
-  })
   return (
     // <ThemeProvider theme={ theme }>
     <Routes>

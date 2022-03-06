@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Table,
 	TableBody,
@@ -21,6 +21,8 @@ import useStyles from "../Styles/table.styles"
 import SearchIcon from "@material-ui/icons/Search";
 import Popup from "../Popup/popup";
 import AddTaskForm from "../AddTaskFrom/AddTaskForm";
+import { useDispatch, useSelector } from "react-redux";
+import { loadTasks } from "../../redux/actions";
 
 const useButton = makeStyles({
 	root: {
@@ -151,6 +153,10 @@ const rows = [
 ];
 
 export default function BasicTable() {
+	let dispatch = useDispatch();
+	const { tasks } = useSelector(state => state.data)
+	let taskData = tasks.data.label;
+	console.log(taskData)
 	const classes = useStyles();
 	const outlinedInputClasses = useOutlinedInputStyles();
 	const buttonClasses = useButton();
@@ -188,6 +194,10 @@ export default function BasicTable() {
 			},
 		});
 	};
+
+	useEffect(() => {
+		dispatch(loadTasks());
+	}, []);
 
 	return (
 		<>

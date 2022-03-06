@@ -16,6 +16,10 @@ const useStyles = makeStyles({
     textarea: {
         border: "1px solid #FFFFFF",
     },
+    errorMsg: {
+        color: "red",
+        textTransform: "capitalize"
+    }
 })
 
 export default useStyles;
