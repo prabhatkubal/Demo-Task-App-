@@ -17,7 +17,7 @@ const Popup = (props) => {
     const classes = popupStyles();
     return (
         <Dialog open={ openPopup } className={ classes.popupContainer }>
-            <DialogTitle><div style={ { textAlign: "center" } }>Add Task</div></DialogTitle>
+            <DialogTitle><div style={ { textAlign: "center", color: "#FFFFFF" } }>Add Task</div></DialogTitle>
             <DialogContent>
                 { children }
             </DialogContent>

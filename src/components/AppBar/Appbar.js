@@ -21,6 +21,9 @@ const theme = createTheme({
 	},
 });
 
+let displayName = localStorage.getItem("firstname");
+let displayLetter = displayName.charAt(0);
+
 const Appbar = () => {
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,7 +38,7 @@ const Appbar = () => {
 		<ThemeProvider theme={ theme }>
 			<AppBar className={ classes.appbar }>
 				<Typography className={ classes.typography }>Task Management</Typography>
-				<Paper className={ classes.paper }>H</Paper>
+				<Paper className={ classes.paper }>{ displayLetter }</Paper>
 				<Button
 					id="basic-button"
 					aria-controls={ open ? "basic-menu" : undefined }
@@ -45,7 +48,7 @@ const Appbar = () => {
 					onClick={ handleClick }
 					className={ classes.button }
 				>
-					Dashboard
+					{ displayName }
 				</Button>
 				<Menu
 					id="basic-menu"

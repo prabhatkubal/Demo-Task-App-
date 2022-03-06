@@ -8,8 +8,9 @@ import Textfield from "../FormsUI/Textfield/index";
 import ButtonSubmit from "../FormsUI/Buttons";
 import { Button } from "@material-ui/core";
 import useStyles from "../Styles/login&signup.styles";
-import { Axios } from "axios";
 import axiosInstance from "../../helpers/axios";
+const baseURL = process.env.REACT_APP_BACKEND_URL;
+const LOGIN_URL = "/api/users/login";
 
 const WhiteTypography = withStyles({
 	root: {
@@ -49,19 +50,16 @@ const Login = () => {
 				<Formik
 					initialValues={ { ...INITIAL_FORM_STATE } }
 					validationSchema={ FORM_VALIDATION }
-					onSubmit={ (values, { setSubmitting }) => {
-						setTimeout(() => {
-							console.log(values);
-							setSubmitting(false);
-
-							axiosInstance
-								.post("/api/users/login", values)
-								.then((res) => {
-									localStorage.token = res.data.data.accessToken;
-									navigate("/dashboard")
-								})
-								.catch((err) => alert(err.response.data.errors));
-						}, 400);
+					onSubmit={ (values) => {
+						console.log(values);
+						axiosInstance
+							.post(`${baseURL}${LOGIN_URL}`, values)
+							.then((res) => {
+								localStorage.firstname = res.data.data.firstName;
+								localStorage.token = res.data.data.accessToken;
+								navigate("/dashboard")
+							})
+							.catch((err) => alert(err.response.data.errors));
 					} }
 				>
 					<Form className={ classes.formContainer }>

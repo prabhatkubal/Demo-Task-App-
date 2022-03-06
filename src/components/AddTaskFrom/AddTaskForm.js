@@ -1,5 +1,5 @@
 import React from 'react'
-import { Formik, Form, useField } from 'formik'
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import {
     TextField,
@@ -20,12 +20,14 @@ import {
     InputLabel,
     Select
 } from '@material-ui/core'
-// import { DesktopDatePicker, LocalizationProvider, AdapterDateFns } from '@mui/lab';
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
+// import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import useStyles from "../Styles/addtaskform.styles"
 import CreateBtn from '../FormsUI/CreateBtn/CreateBtn';
 import CancelBtn from '../FormsUI/CancelBtn/CancelBtn';
 // import Select from "../FormsUI/Select/index"
-import Priorities from "../../Data/Priorities.json"
+import Priorities from "../../Data/Priorities.json";
 // import Checkbox from '../FormsUI/Checkbox'
 
 const stylesRadio = theme => ({
@@ -41,22 +43,22 @@ const INITIAL_FORM_STATE = {
     title: "",
     description: "",
     dueDate: "",
-    // label: [],
+    label: [],
     priority: "",
-    type: [],
+    type: "",
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-    title: Yup.string()
-        .required('Required'),
-    description: Yup.string()
-        .required('Required'),
-    // label: Yup.array()
-    //     .required('Select atleast one'),
-    priority: Yup.string()
-        .required('Required'),
-    type: Yup.string()
-        .required('Required'),
+    // title: Yup.string()
+    //     .required('Required'),
+    // description: Yup.string()
+    //     .required('Required'),
+    // // label: Yup.array()
+    // //     .required('Select atleast one'),
+    // priority: Yup.string()
+    //     .required('Required'),
+    // type: Yup.string()
+    // .required('Required'),
 });
 
 const AddTaskForm = (props) => {
@@ -66,7 +68,7 @@ const AddTaskForm = (props) => {
 
     // const classes = addFormStyles();
     return (
-        <Formik initialValues={ { ...INITIAL_FORM_STATE } }
+        <Formik initialValues={ INITIAL_FORM_STATE }
             validationSchema={ FORM_VALIDATION }
             onSubmit={ (values, { setSubmitting }) => {
                 setTimeout(() => {
@@ -77,10 +79,10 @@ const AddTaskForm = (props) => {
             } }>
             <Form className={ classes.formContainer }>
                 <Grid Container className={ classes.grid }>
-                    <Typography color='secondary'>
+                    <Typography>
                         Title
                     </Typography>
-                    <TextField variant='outlined' size="small" name='title' className={ classes.textfield } />
+                    <TextField variant='outlined' color='secondary' size="small" name='title' className={ classes.textfield } />
                     <Typography className={ classes.textfieldTypography }>
                         Description
                     </Typography>
@@ -94,13 +96,10 @@ const AddTaskForm = (props) => {
 
                     <Grid style={ { marginTop: "10px" } } container rowSpacing={ 1 } columnSpacing={ { xs: 1, sm: 2, md: 3 } }>
                         <Grid item xs={ 6 }>
-                            {/* <LocalizationProvider dateAdapter={ AdapterDateFns }>
-                                <DesktopDatePicker
-                                    label="Date desktop"
-                                    inputFormat="MM/dd/yyyy"
-                                    renderInput={ (params) => <TextField { ...params } /> }
-                                />
-                            </LocalizationProvider> */}
+                            <Typography color='secondary'>
+                                Date
+                            </Typography>
+                            <TextField type="date" color='secondary' variant='outlined' size="small" name='dueDate' />
                         </Grid>
                         <Grid item xs={ 6 }>
                             <FormControl>
