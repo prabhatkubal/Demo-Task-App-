@@ -133,7 +133,7 @@ const AddTaskForm = (props) => {
                     <Grid style={ { marginTop: "10px", justifyContent: "center" } } container rowSpacing={ 1 } columnSpacing={ { xs: 1, sm: 1, md: 3 } }>
                         <CancelBtn onClick={ () => setOpenPopup(false) } >Cancel</CancelBtn>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <CreateBtn >Create</CreateBtn>
+                        <CreateBtn onClick={ () => setOpenPopup(false) } >Create</CreateBtn>
                     </Grid>
                 </Grid>
             </Form>

@@ -11,7 +11,7 @@ const popupStyles = makeStyles({
 })
 
 const Popup = (props) => {
-    const { title, children, openPopup, steOpenPopup } = props;
+    const { title, children, openPopup, setOpenPopup } = props;
     const classes = popupStyles();
     return (
         <Dialog open={ openPopup } className={ classes.popupContainer }>

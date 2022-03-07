@@ -18,15 +18,6 @@ import { editTask, getTask } from '../../redux/actions';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
-// const stylesRadio = theme => ({
-//     radio: {
-//         '&$checked': {
-//             color: '#09A79E'
-//         }
-//     },
-//     checked: {}
-// })
-
 const INITIAL_FORM_STATE = {
     title: "",
     description: "",

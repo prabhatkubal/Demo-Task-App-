@@ -67,76 +67,84 @@ function createData(date, title, description, priority, type, label) {
 
 const rows = [
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 	createData(
-		"23 june 2020",
-		"Reduce churn rate from 2...",
-		"Amet minim mollit non deserunt ulla...",
-		"Highest",
-		"Task",
-		"Feature, Front end,.."
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	),
+	createData(
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
 	),
 ];
 
@@ -145,22 +153,15 @@ export default function BasicTable() {
 	let dispatch = useDispatch();
 	const { tasks } = useSelector(state => state.data)
 	let taskDatas = tasks.data;
+	console.log(taskDatas)
 
 	const classes = useStyles();
 	const buttonClasses = useButton();
 
-	const pages = [4, 10, 15];
-
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
-	const [filterFn, setFilterFn] = useState({
-		fn: (items) => {
-			return items;
-		},
-	});
 	const [openPopup, setOpenPopup] = useState(false);
 	const [openEditPopup, setOpenEditPopup] = useState(false);
-
+	const [page, setPage] = React.useState(0);
+	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
@@ -169,20 +170,18 @@ export default function BasicTable() {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+	const emptyRows =
+		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-	const rowsAfterPagingAndSorting = () => {
-		return rows.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
-	};
-
-	const handleSearch = (e) => {
-		let target = e.target;
-		setFilterFn({
-			fn: (items) => {
-				if ((target.value = "")) return items;
-				else return items.filter((x) => x.title.toLowerCase().includes(target));
-			},
-		});
-	};
+	// const handleSearch = (e) => {
+	// 	let target = e.target;
+	// 	setFilterFn({
+	// 		fn: (items) => {
+	// 			if ((target.value = "")) return items;
+	// 			else return items.filter((x) => x.title.toLowerCase().includes(target));
+	// 		},
+	// 	});
+	// };
 
 	const handleDelete = (_id) => {
 		setConfirmDialog({
@@ -264,7 +263,7 @@ export default function BasicTable() {
 									</InputAdornment>
 								),
 							} }
-							onChange={ handleSearch }
+						// onChange={ handleSearch }
 						/>
 						<Button
 							classes={ buttonClasses }
@@ -288,67 +287,74 @@ export default function BasicTable() {
 						</TableHead>
 						<TableBody>
 							{/* { rowsAfterPagingAndSorting().map((row) => ( */ }
-							{ taskDatas && taskDatas.map((task) => (
-								<StyledTableRow
-									key={ task._id }
-									sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
-								>
-									<StyledTableCell component="th" scope="row">
-										{ task.dueDate.substring(0, 10) }
-									</StyledTableCell>
-									<StyledTableCell>{ task.title }</StyledTableCell>
-									<StyledTableCell>{ task.description }</StyledTableCell>
-									<StyledTableCell>{ getPriority(task.priority) }</StyledTableCell>
-									<StyledTableCell>{ getType(task.type) }</StyledTableCell>
-									<StyledTableCell>{ getLabel(...task.label) }</StyledTableCell>
-									<StyledTableCell>
-										<Button
-											className={ classes.button }
-											color="secondary"
-											onClick={ () => setOpenEditPopup(true) }
-										>
-											Edit
-										</Button>
-									</StyledTableCell>
-									<StyledTableCell>
-										<Button
-											className={ classes.button }
-											color="secondary"
-											onClick={ () => {
-												setConfirmDialog({
-													isOpen: true,
-													title: 'Are you sure you want to delete the Task?',
-													subTitle: 'By giving delete the task will be deleted permanently',
-													onConfirm: () => { handleDelete(task._id) }
-												})
-											} }
-										>
-											DELETE
-										</Button>
-										<ConfirmDialog
-											confirmDialog={ confirmDialog }
-											setConfirmDialog={ setConfirmDialog }
-										/>
-									</StyledTableCell>
+							{ taskDatas && taskDatas
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((task, index) => (
+									<StyledTableRow
+										key={ task._id }
+										sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
+									>
+										<StyledTableCell component="th" scope="row">
+											{ task.dueDate.substring(0, 10) }
+										</StyledTableCell>
+										<StyledTableCell>{ task.title }</StyledTableCell>
+										<StyledTableCell>{ task.description }</StyledTableCell>
+										<StyledTableCell>{ getPriority(task.priority) }</StyledTableCell>
+										<StyledTableCell>{ getType(task.type) }</StyledTableCell>
+										<StyledTableCell>{ getLabel(...task.label) }</StyledTableCell>
+										<StyledTableCell>
+											<Button
+												className={ classes.button }
+												color="secondary"
+												onClick={ () => setOpenEditPopup(true) }
+											>
+												Edit
+											</Button>
+										</StyledTableCell>
+										<StyledTableCell>
+											<Button
+												className={ classes.button }
+												color="secondary"
+												onClick={ () => {
+													setConfirmDialog({
+														isOpen: true,
+														title: 'Are you sure you want to delete the Task?',
+														subTitle: 'By giving delete the task will be deleted permanently',
+														onConfirm: () => { handleDelete(task._id) }
+													})
+												} }
+											>
+												DELETE
+											</Button>
+											<ConfirmDialog
+												confirmDialog={ confirmDialog }
+												setConfirmDialog={ setConfirmDialog }
+											/>
+										</StyledTableCell>
+									</StyledTableRow>
+								)) }
+							{ emptyRows > 0 && (
+								<StyledTableRow style={ { height: 53 * emptyRows } }>
+									<TableCell colSpan={ 6 } />
 								</StyledTableRow>
-							)) }
+							) }
 						</TableBody>
 					</Table>
 					<TablePagination
-						rowsPerPageOptions={ pages }
+						rowsPerPageOptions={ [4, 10, 15] }
 						component="div"
 						count={ rows.length }
 						rowsPerPage={ rowsPerPage }
 						page={ page }
-						onPageChange={ handleChangePage }
-						onRowsPerPageChange={ handleChangeRowsPerPage }
+						onChangePage={ handleChangePage }
+						onChangeRowsPerPage={ handleChangeRowsPerPage }
 					/>
 				</TableContainer>
 				<Popup
 					openPopup={ openPopup }
 					setOpenPopup={ setOpenPopup }
 				>
-					<AddTaskForm />
+					<AddTaskForm props={ setOpenPopup } />
 				</Popup>
 				<EditPopUp
 					openEditPopup={ openEditPopup }

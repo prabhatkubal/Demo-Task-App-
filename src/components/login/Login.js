@@ -10,6 +10,7 @@ import { Button } from "@material-ui/core";
 import useStyles from "../Styles/login&signup.styles";
 import axiosInstance from "../../helpers/axios";
 import path from "../../helpers/apiURL"
+import { sha512_256, sha512 } from "js-sha512";
 
 const WhiteTypography = withStyles({
 	root: {
@@ -46,14 +47,14 @@ const Login = () => {
 
 			<Grid item md={ 6 } className={ classes.formikContainer }>
 				<Formik
-					initialValues={ { ...INITIAL_FORM_STATE } }
+					initialValues={ { ...INITIAL_FORM_STATE && INITIAL_FORM_STATE.password === sha512(INITIAL_FORM_STATE.password) } }
 					validationSchema={ FORM_VALIDATION }
 					onSubmit={ (values) => {
-						// console.log(values);
+						console.log(values);
 						axiosInstance
 							.post(path.LOGIN_URL, values)
 							.then((res) => {
-								// console.log(res.data.data)
+								console.log(res.data.data)
 								localStorage.firstname = res.data.data.firstName;
 								localStorage.token = res.data.data.accessToken;
 								navigate("/dashboard")
@@ -69,14 +70,15 @@ const Login = () => {
 						<Typography className={ classes.textfieldTypography }>
 							Email_ID
 						</Typography>
-						<Textfield name="email" className={ classes.textfield } />
+						<Textfield color="secondary" name="email" className={ classes.textfield } />
 
 						<Typography className={ classes.textfieldTypography }>
 							Password
 						</Typography>
-						<Textfield name="password" className={ classes.textfield } />
+						<Textfield color="secondary" type="password" name="password" className={ classes.textfield } />
 
 						<ButtonSubmit>Submit</ButtonSubmit>
+
 					</Form>
 				</Formik>
 			</Grid>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { useFormikContext } from 'formik';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -17,18 +16,11 @@ const useStyles = makeStyles({
 
 const CancelBtn = ({
     children,
-    ...otherProps
 }) => {
     const classes = useStyles();
-    const { submitForm } = useFormikContext();
-
-    const handelSubmit = () => {
-        submitForm();
-    }
 
     const configButton = {
         variant: 'contained',
-        onClick: handelSubmit
     }
 
     return (

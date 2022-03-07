@@ -35,18 +35,6 @@ export const loadTasks = () => {
     }
 }
 
-export const deleteTask = (_id) => {
-    return function (dispatch) {
-        axiosInstance
-            .delete(`${path.GET_TASKS}/${_id}`)
-            .then((res) => {
-                dispatch(taskToADD());
-                dispatch(loadTasks());
-            })
-            .catch((err) => console.log(err.response.data.errors));
-    }
-}
-
 export const addTask = (task) => {
     return function (dispatch) {
         axiosInstance
@@ -59,10 +47,22 @@ export const addTask = (task) => {
     }
 }
 
+export const deleteTask = (_id) => {
+    return function (dispatch) {
+        axiosInstance
+            .delete(`${path.GET_TASKS}/${_id}`)
+            .then((res) => {
+                dispatch(taskToADD());
+                dispatch(loadTasks());
+            })
+            .catch((err) => console.log(err.response.data.errors));
+    }
+}
+
 export const getSingleTask = (_id) => {
     return function (dispatch) {
         axiosInstance
-            .get(`${path.TASKS}/${_id}`)
+            .get(`${path.GET_TASKS}/${_id}`)
             .then((res) => {
                 dispatch(taskToGET(res.data));
                 dispatch(loadTasks());
