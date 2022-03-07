@@ -13,9 +13,10 @@ import CancelBtn from '../FormsUI/CancelBtn/CancelBtn';
 import Textfield from "../FormsUI/Textfield/index"
 import SelectWrapper from "../FormsUI/Select/index"
 import Priorities from "../../Data/Priorities.json";
-import axiosInstance from '../../helpers/axios';
-import { useDispatch } from 'react-redux';
-import { addTask } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { editTask, getTask } from '../../redux/actions';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // const stylesRadio = theme => ({
 //     radio: {
@@ -48,10 +49,16 @@ const FORM_VALIDATION = Yup.object().shape({
     // .required('Required'),
 });
 
-const AddTaskForm = (props) => {
+const EditTaskForm = (props) => {
     const classes = useStyles();
     let dispatch = useDispatch();
-    const setOpenPopup = props.setOpenPopup;
+    const { task } = useSelector((state) => state.data)
+    const setOpenEditPopup = props.setOpenEditPopup;
+
+    // useEffect(() => {
+    //     dispatch(getTask(_id))
+    // }, [])
+
     return (
         <Formik initialValues={ INITIAL_FORM_STATE }
             validationSchema={ FORM_VALIDATION }
@@ -59,7 +66,7 @@ const AddTaskForm = (props) => {
                 setTimeout(() => {
                     console.log(task);
                     setSubmitting(false);
-                    dispatch(addTask(task));
+                    // dispatch(editTask(_id));
                 })
             } }>
             <Form className={ classes.formContainer } color="tertiary">
@@ -131,9 +138,9 @@ const AddTaskForm = (props) => {
                         </Grid>
                     </Grid>
                     <Grid style={ { marginTop: "10px", justifyContent: "center" } } container rowSpacing={ 1 } columnSpacing={ { xs: 1, sm: 1, md: 3 } }>
-                        <CancelBtn onClick={ () => setOpenPopup(false) } >Cancel</CancelBtn>
+                        <CancelBtn onClick={ () => setOpenEditPopup(false) } >Cancel</CancelBtn>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <CreateBtn >Create</CreateBtn>
+                        <CreateBtn >Update</CreateBtn>
                     </Grid>
                 </Grid>
             </Form>
@@ -141,4 +148,4 @@ const AddTaskForm = (props) => {
     )
 }
 
-export default AddTaskForm
+export default EditTaskForm;

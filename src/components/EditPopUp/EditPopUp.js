@@ -10,12 +10,12 @@ const popupStyles = makeStyles({
     },
 })
 
-const Popup = (props) => {
-    const { title, children, openPopup, steOpenPopup } = props;
+const EditPopUp = (props) => {
+    const { title, children, openEditPopup, setOpenEditPopup } = props;
     const classes = popupStyles();
     return (
-        <Dialog open={ openPopup } className={ classes.popupContainer }>
-            <DialogTitle><div style={ { textAlign: "center", color: "#FFFFFF" } }>Add Task</div></DialogTitle>
+        <Dialog open={ openEditPopup } className={ classes.popupContainer }>
+            <DialogTitle><div style={ { textAlign: "center", color: "#FFFFFF" } }>Edit Task</div></DialogTitle>
             <DialogContent>
                 { children }
             </DialogContent>
@@ -23,4 +23,4 @@ const Popup = (props) => {
     );
 }
 
-export default Popup;
+export default EditPopUp;

@@ -12,8 +12,17 @@ import Appbar from "../AppBar/Appbar";
 const theme = createTheme({
 	palette: {
 		type: "dark",
-		primary: { main: '#09A79E' }, // Purple and green play nicely together.
-		secondary: { main: '#FFFFFF' }, // This is just green.A700 as hex.
+		primary: {
+			main: '#09A79E'
+		},
+		secondary: {
+			main: '#FFFFFF'
+		},
+		background: {
+			default: '#2B2C41',
+			paper: '#2B2C41',
+		},
+		// redColor: palette.augmentColor({ color: red }),
 	},
 });
 

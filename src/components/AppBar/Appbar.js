@@ -12,6 +12,7 @@ import useStyles from "../Styles/appbar_styles";
 import { createTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core";
 import { ArrowDropDown } from "@material-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
 	palette: {
@@ -22,9 +23,10 @@ const theme = createTheme({
 });
 
 const Appbar = () => {
+	const navigate = useNavigate();
 	let displayName = localStorage.getItem("firstname");
 	let displayLetter = displayName.charAt(0);
-	
+
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
@@ -33,6 +35,8 @@ const Appbar = () => {
 	};
 	const handleClose = () => {
 		setAnchorEl(null);
+		localStorage.clear();
+		navigate("/")
 	};
 	return (
 		<ThemeProvider theme={ theme }>

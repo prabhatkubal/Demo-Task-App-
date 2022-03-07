@@ -49,11 +49,11 @@ const Login = () => {
 					initialValues={ { ...INITIAL_FORM_STATE } }
 					validationSchema={ FORM_VALIDATION }
 					onSubmit={ (values) => {
-						console.log(values);
+						// console.log(values);
 						axiosInstance
 							.post(path.LOGIN_URL, values)
 							.then((res) => {
-								console.log(res.data.data)
+								// console.log(res.data.data)
 								localStorage.firstname = res.data.data.firstName;
 								localStorage.token = res.data.data.accessToken;
 								navigate("/dashboard")

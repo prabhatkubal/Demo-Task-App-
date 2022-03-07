@@ -11,18 +11,21 @@ import {
 	TablePagination,
 	Toolbar,
 	TextField,
-	InputBase,
+	Typography,
 	InputAdornment,
 } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core";
-import { createTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core";
 import useStyles from "../Styles/table.styles"
 import SearchIcon from "@material-ui/icons/Search";
 import Popup from "../Popup/popup";
+import EditPopUp from "../EditPopUp/EditPopUp";
 import AddTaskForm from "../AddTaskFrom/AddTaskForm";
 import { useDispatch, useSelector } from "react-redux";
-import { loadTasks } from "../../redux/actions";
+import { deleteTask, getSingleTask, loadTasks } from "../../redux/actions";
+import ConfirmDialog from "../ConfirmDialog/index";
+import EditTaskForm from "../EditTaskForm/EditTaskForm";
+
 
 const useButton = makeStyles({
 	root: {
@@ -38,22 +41,7 @@ const useButton = makeStyles({
 	}
 })
 
-const useOutlinedInputStyles = makeStyles((theme) => ({
-	root: {
-		height: 40,
-		"& $notchedOutline": {
-			borderColor: "red",
-		},
-		"&:hover $notchedOutline": {
-			borderColor: "blue",
-		},
-		"&$focused $notchedOutline": {
-			borderColor: "green",
-		},
-	},
-	focused: {},
-	notchedOutline: {},
-}));
+
 
 const StyledTableCell = withStyles({
 	root: {
@@ -153,12 +141,12 @@ const rows = [
 ];
 
 export default function BasicTable() {
+	const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 	let dispatch = useDispatch();
 	const { tasks } = useSelector(state => state.data)
-	let taskData = tasks.data.label;
-	console.log(taskData)
+	let taskDatas = tasks.data;
+
 	const classes = useStyles();
-	const outlinedInputClasses = useOutlinedInputStyles();
 	const buttonClasses = useButton();
 
 	const pages = [4, 10, 15];
@@ -171,6 +159,7 @@ export default function BasicTable() {
 		},
 	});
 	const [openPopup, setOpenPopup] = useState(false);
+	const [openEditPopup, setOpenEditPopup] = useState(false);
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -195,9 +184,64 @@ export default function BasicTable() {
 		});
 	};
 
+	const handleDelete = (_id) => {
+		setConfirmDialog({
+			...confirmDialog,
+			isOpen: false,
+		})
+		dispatch(deleteTask(_id));
+	}
+
+	// const handleEdit = () => {
+	// 	setOpenEditPopup(true)
+	// 	dispatch(getSingleTask(_id))
+	// }
+
+
 	useEffect(() => {
 		dispatch(loadTasks());
 	}, []);
+
+	function getPriority(key) {
+		switch (key) {
+			case 1:
+				return "High"
+			case 2:
+				return "Medium"
+			case 3:
+				return "Low"
+			default:
+				break;
+		}
+	}
+
+	function getType(key) {
+		switch (key) {
+			case 1:
+				return "Task"
+			case 2:
+				return "Story"
+			case 3:
+				return "Bug"
+			default:
+				break;
+		}
+	}
+
+	function getLabel(key) {
+		switch (key) {
+			case 1:
+				return "Feature, "
+			case 2:
+				return "Front end, "
+			case 3:
+				return "Change request, "
+			case 4:
+				return "Back end, "
+			default:
+				break;
+		}
+	}
 
 	return (
 		<>
@@ -210,7 +254,6 @@ export default function BasicTable() {
 					<Toolbar>
 						<TextField
 							size="small"
-							classes={ outlinedInputClasses }
 							className={ classes.searchInput }
 							variant="outlined"
 							placeholder="Search"
@@ -244,28 +287,48 @@ export default function BasicTable() {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{ rowsAfterPagingAndSorting().map((row) => (
+							{/* { rowsAfterPagingAndSorting().map((row) => ( */ }
+							{ taskDatas && taskDatas.map((task) => (
 								<StyledTableRow
-									key={ row.date }
+									key={ task._id }
 									sx={ { "&:last-child td, &:last-child th": { border: 0 } } }
 								>
 									<StyledTableCell component="th" scope="row">
-										{ row.date }
+										{ task.dueDate.substring(0, 10) }
 									</StyledTableCell>
-									<StyledTableCell>{ row.title }</StyledTableCell>
-									<StyledTableCell>{ row.description }</StyledTableCell>
-									<StyledTableCell>{ row.priority }</StyledTableCell>
-									<StyledTableCell>{ row.type }</StyledTableCell>
-									<StyledTableCell>{ row.label }</StyledTableCell>
+									<StyledTableCell>{ task.title }</StyledTableCell>
+									<StyledTableCell>{ task.description }</StyledTableCell>
+									<StyledTableCell>{ getPriority(task.priority) }</StyledTableCell>
+									<StyledTableCell>{ getType(task.type) }</StyledTableCell>
+									<StyledTableCell>{ getLabel(...task.label) }</StyledTableCell>
 									<StyledTableCell>
-										<Button className={ classes.button } color="secondary">
+										<Button
+											className={ classes.button }
+											color="secondary"
+											onClick={ () => setOpenEditPopup(true) }
+										>
 											Edit
 										</Button>
 									</StyledTableCell>
 									<StyledTableCell>
-										<Button className={ classes.button } color="secondary">
+										<Button
+											className={ classes.button }
+											color="secondary"
+											onClick={ () => {
+												setConfirmDialog({
+													isOpen: true,
+													title: 'Are you sure you want to delete the Task?',
+													subTitle: 'By giving delete the task will be deleted permanently',
+													onConfirm: () => { handleDelete(task._id) }
+												})
+											} }
+										>
 											DELETE
 										</Button>
+										<ConfirmDialog
+											confirmDialog={ confirmDialog }
+											setConfirmDialog={ setConfirmDialog }
+										/>
 									</StyledTableCell>
 								</StyledTableRow>
 							)) }
@@ -287,6 +350,13 @@ export default function BasicTable() {
 				>
 					<AddTaskForm />
 				</Popup>
+				<EditPopUp
+					openEditPopup={ openEditPopup }
+					setOpenEditPopup={ setOpenEditPopup }
+				>
+					<EditTaskForm />
+				</EditPopUp>
+
 			</ThemeProvider>
 		</>
 	);

@@ -19,10 +19,6 @@ const tableStyles = makeStyles({
             height: 40,
         },
         marginLeft: "auto",
-        border: "1px solid #FFFFFF",
-        '&:hover': {
-            border: "1px solid #FFFFFF",
-        },
         borderRadius: 4,
     },
     searchIcon: {
