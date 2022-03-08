@@ -10,7 +10,7 @@ import { Axios } from "axios";
 import { Link } from "react-router-dom";
 import useStyles from "../Styles/login&signup.styles";
 import axiosInstance from "../../helpers/axios";
-import path from "../../helpers/apiURL"
+import path from "../../helpers/apiURL";
 import { sha512 } from "js-sha512";
 const WhiteTypography = withStyles({
 	root: {
@@ -40,23 +40,24 @@ const Signup = () => {
 	const classes = useStyles();
 
 	return (
-		<Grid container style={ { minHeight: "100vh" } }>
-			<Grid item xs={ 3 } md={ 12 } className={ classes.topBarContainer }>
-				Need an account ?{ " " }
+		<Grid container style={{ minHeight: "100vh" }}>
+			<Grid item xs={3} md={12} className={classes.topBarContainer}>
+				Need an account ?{" "}
 				<Link to="/">
-					<Button
-						className={ classes.entryFormToogle }
-						variant="outlined"
-					>
+					<Button className={classes.entryFormToogle} variant="outlined">
 						Login
 					</Button>
 				</Link>
 			</Grid>
-			<Grid item md={ 6 } className={ classes.formikContainer }>
+			<Grid item md={6} className={classes.formikContainer}>
 				<Formik
-					initialValues={ { ...INITIAL_FORM_STATE && INITIAL_FORM_STATE.password === sha512(INITIAL_FORM_STATE.password) } }
-					validationSchema={ FORM_VALIDATION }
-					onSubmit={ (values, { setSubmitting }) => {
+					initialValues={{
+						...(INITIAL_FORM_STATE &&
+							INITIAL_FORM_STATE.password ===
+								sha512(INITIAL_FORM_STATE.password)),
+					}}
+					validationSchema={FORM_VALIDATION}
+					onSubmit={(values, { setSubmitting }) => {
 						axiosInstance
 							.post(path.SIGNUP_URL, values)
 							.then((res) => {
@@ -67,32 +68,49 @@ const Signup = () => {
 								alert(err.response.data.errors);
 								console.log("err", err.response.data.errors);
 							});
-					} }
+					}}
 				>
-					<Form className={ classes.formContainer }>
+					<Form className={classes.formContainer}>
 						<Grid container justifyContent="center">
 							<WhiteTypography variant="h3">SignUp</WhiteTypography>
 						</Grid>
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							First Name
 						</Typography>
-						<Textfield color="secondary" name="firstName" className={ classes.textfield } />
+						<Textfield
+							color="secondary"
+							name="firstName"
+							className={classes.textfield}
+						/>
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							Last Name
 						</Typography>
-						<Textfield color="secondary" name="lastName" className={ classes.textfield } />
+						<Textfield
+							color="secondary"
+							name="lastName"
+							className={classes.textfield}
+						/>
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							Email_ID
 						</Typography>
-						<Textfield color="secondary" name="email" className={ classes.textfield } />
+						<Textfield
+							color="secondary"
+							name="email"
+							className={classes.textfield}
+						/>
 
-						<Typography className={ classes.textfieldTypography }>
+						<Typography className={classes.textfieldTypography}>
 							Password
 						</Typography>
-						<Textfield color="secondary" type="password" name="password" className={ classes.textfield } />
+						<Textfield
+							color="secondary"
+							type="password"
+							name="password"
+							className={classes.textfield}
+						/>
 
 						<ButtonSubmit>Submit</ButtonSubmit>
 					</Form>
